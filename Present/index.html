@@ -113,6 +113,155 @@
         object-fit:contain;
       }
     }
+    .pdf-export{
+      --text:#0f172a;
+      --text-on-dark:#0f172a;
+      --muted:#475569;
+      --muted-on-dark:#475569;
+      --bg:#ffffff;
+      --bg-2:#ffffff;
+      --surface:#ffffff;
+      --surface-2:#ffffff;
+      --border:#e2e8f0;
+    }
+    .pdf-export *{
+      animation:none !important;
+      transition:none !important;
+      box-shadow:none !important;
+      text-shadow:none !important;
+    }
+    .pdf-export body{
+      background:#ffffff;
+      color:var(--text);
+    }
+    .pdf-export a{color:var(--text)}
+    .pdf-export body::before,
+    .pdf-export body::after,
+    .pdf-export .tech-bg,
+    .pdf-export .intro-video,
+    .pdf-export .modal{
+      display:none !important;
+    }
+    .pdf-export header{
+      position:static;
+      background:#ffffff;
+      color:var(--text);
+      border-bottom:1px solid var(--border);
+      box-shadow:none;
+    }
+    .pdf-export .section-shell,
+    .pdf-export .card,
+    .pdf-export .stat{
+      background:#ffffff;
+      border:1px solid var(--border);
+      box-shadow:none;
+    }
+    .pdf-export .section-shell{
+      backdrop-filter:none;
+    }
+    .pdf-export .section-shell::before,
+    .pdf-export .section-shell::after,
+    .pdf-export .about-card::before,
+    .pdf-export .thumb::before,
+    .pdf-export .thumb::after{
+      display:none;
+    }
+    .pdf-export .contact form.card{
+      background:#ffffff;
+      border:1px solid var(--border);
+    }
+    .pdf-export .badge,
+    .pdf-export .chip,
+    .pdf-export .pill,
+    .pdf-export .project-label,
+    .pdf-export .project-number{
+      background:#f1f5f9;
+      color:var(--text);
+      border:1px solid var(--border);
+      opacity:1;
+      box-shadow:none;
+    }
+    .pdf-export .tag,
+    .pdf-export .about-tag,
+    .pdf-export .contact-chip,
+    .pdf-export .highlight-item{
+      background:#f1f5f9;
+      color:var(--text);
+      border:1px solid var(--border);
+      opacity:1;
+      box-shadow:none;
+    }
+    .pdf-export .btn,
+    .pdf-export .link{
+      background:#ffffff;
+      color:var(--text);
+      border-color:var(--border);
+      box-shadow:none;
+    }
+    .pdf-export .btn.primary{
+      background:linear-gradient(135deg,var(--accent),#ff946d);
+      color:#ffffff;
+    }
+    .pdf-export .link.light{
+      background:#f8fafc;
+      color:var(--text);
+      border-color:var(--border);
+      box-shadow:none;
+    }
+    .pdf-export input,
+    .pdf-export textarea{
+      background:#ffffff;
+      color:var(--text);
+      border:1px solid var(--border);
+      box-shadow:none;
+    }
+    .pdf-export [data-reveal]{
+      opacity:1 !important;
+      transform:none !important;
+    }
+    @media print{
+      :root{
+        --text:#0f172a;
+        --text-on-dark:#0f172a;
+        --muted:#475569;
+        --muted-on-dark:#475569;
+        --bg:#ffffff;
+        --bg-2:#ffffff;
+        --surface:#ffffff;
+        --surface-2:#ffffff;
+        --border:#e2e8f0;
+      }
+      *{
+        animation:none !important;
+        transition:none !important;
+        box-shadow:none !important;
+        text-shadow:none !important;
+      }
+      body{
+        background:#ffffff !important;
+        color:var(--text) !important;
+      }
+      a{color:var(--text) !important}
+      body::before,
+      body::after,
+      .tech-bg,
+      .intro-video,
+      .modal{
+        display:none !important;
+      }
+      header{
+        position:static !important;
+        background:#ffffff !important;
+        color:var(--text) !important;
+        border-bottom:1px solid var(--border) !important;
+        box-shadow:none !important;
+      }
+      .section-shell{
+        background:#ffffff !important;
+        border:1px solid var(--border) !important;
+        box-shadow:none !important;
+      }
+    }
     html{scroll-behavior:smooth}
     a{color:inherit;text-decoration:none}
     a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible{
@@ -889,7 +1038,7 @@
     </div>
   </header>
 
-  <main class="container">
+  <main class="container" data-pdf-root>
     <!-- HERO -->
     <section class="hero" style="--i:0" data-parallax>
       <div>
@@ -898,7 +1047,7 @@
         <p class="subtitle">นักศึกษาฝึกงานแผนก IT & Support บริษัท ซี.เจ.เอ็ม. โลจิสติกส์ จำกัด <br>(C.J.M. Logistics Co.,Ltd.)<br><span class="typewriter" data-words="Front-End Developer|UI/UX Enthusiast|AI Workflow">Front-End Developer</span></p>
         <div class="cta">
           <a class="btn primary" href="#projects">ดูผลงาน</a>
-          <a class="btn" href="../resume.pdf" download="Resume-Athiraj.pdf">ดาวน์โหลด Resume (PDF)</a>
+          <a class="btn" href="#" data-download-resume>ดาวน์โหลด Resume (PDF)</a>
         </div>
       </div>
       <div class="hero-visual">
@@ -1173,6 +1322,9 @@
     </div>
   </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script>
     document.body.classList.add("js-ready");
     const intro = document.querySelector(".intro-video");
@@ -1441,6 +1593,67 @@
         openModal(project);
       });
     });
+
+    const downloadResume = document.querySelector("[data-download-resume]");
+    if (downloadResume) {
+      downloadResume.addEventListener("click", async (event) => {
+        event.preventDefault();
+        const pdfRoot = document.querySelector("[data-pdf-root]") || document.querySelector("main");
+        if (!pdfRoot) return;
+        const root = document.documentElement;
+        const cleanup = () => root.classList.remove("pdf-export");
+        root.classList.add("pdf-export");
+        await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+        const jsPDF = window.jspdf?.jsPDF || window.jsPDF;
+        if (window.html2canvas && jsPDF) {
+          const canvas = await window.html2canvas(pdfRoot, {
+            scale: 2,
+            useCORS: true,
+            backgroundColor: "#ffffff",
+          });
+          const imgData = canvas.toDataURL("image/jpeg", 0.98);
+          const pdf = new jsPDF({ orientation: "portrait", unit: "pt", format: "a4" });
+          const pageWidth = pdf.internal.pageSize.getWidth();
+          const pageHeight = pdf.internal.pageSize.getHeight();
+          const ratio = Math.min(pageWidth / canvas.width, pageHeight / canvas.height);
+          const renderWidth = canvas.width * ratio;
+          const renderHeight = canvas.height * ratio;
+          const x = (pageWidth - renderWidth) / 2;
+          const y = (pageHeight - renderHeight) / 2;
+          pdf.addImage(imgData, "JPEG", x, y, renderWidth, renderHeight);
+          pdf.save("Resume-Athiraj.pdf");
+          cleanup();
+          return;
+        }
+        if (window.html2pdf) {
+          const exporter = window.html2pdf()
+            .set({
+              margin: 0.35,
+              filename: "Resume-Athiraj.pdf",
+              image: { type: "jpeg", quality: 0.98 },
+              html2canvas: { scale: 2, useCORS: true, backgroundColor: "#ffffff" },
+              jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+            })
+            .from(pdfRoot)
+            .save();
+          if (exporter && typeof exporter.finally === "function") {
+            exporter.finally(cleanup);
+          } else if (exporter && typeof exporter.then === "function") {
+            exporter.then(cleanup).catch(cleanup);
+          } else {
+            setTimeout(cleanup, 1200);
+          }
+        } else {
+          const afterPrint = () => {
+            cleanup();
+            window.removeEventListener("afterprint", afterPrint);
+          };
+          window.addEventListener("afterprint", afterPrint);
+          window.print();
+          setTimeout(cleanup, 1200);
+        }
+      });
+    }
 
     modal?.addEventListener("click", (event) => {
       if (event.target === modal || event.target.classList.contains("modal-backdrop")) {
