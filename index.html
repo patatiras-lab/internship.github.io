@@ -139,7 +139,12 @@
     .pdf-export body::after,
     .pdf-export .tech-bg,
     .pdf-export .intro-video,
-    .pdf-export .modal{
+    .pdf-export .modal,
+    .pdf-export .scroll-progress,
+    .pdf-export .back-to-top,
+    .pdf-export .cursor-glow,
+    .pdf-export .particle-field,
+    .pdf-export .copy-btn{
       display:none !important;
     }
     .pdf-export header{
@@ -297,6 +302,151 @@
     }
     .menu a:hover{color:var(--accent)}
     .menu a:hover::after{width:100%}
+    @media (min-width:900px){
+      html.has-extras-scroll{
+        scroll-snap-type:y proximity;
+        scroll-padding-top:96px;
+      }
+      html.has-extras-scroll main > section{scroll-snap-align:start}
+    }
+    .scroll-progress{
+      position:fixed;
+      top:0;
+      left:0;
+      right:0;
+      height:6px;
+      background:rgba(15,23,42,.65);
+      z-index:30;
+      pointer-events:none;
+      display:none;
+    }
+    .scroll-progress-bar{
+      display:block;
+      height:100%;
+      width:100%;
+      transform:scaleX(0);
+      transform-origin:0 50%;
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      transition:transform .1s linear;
+    }
+    .back-to-top{
+      position:fixed;
+      right:24px;
+      bottom:24px;
+      width:44px;
+      height:44px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:rgba(2,6,23,.8);
+      color:var(--text);
+      font-weight:700;
+      letter-spacing:.5px;
+      display:none;
+      place-items:center;
+      cursor:pointer;
+      box-shadow:0 12px 30px rgba(2,6,23,.5);
+      opacity:0;
+      transform:translateY(10px);
+      pointer-events:none;
+      transition:opacity .2s ease, transform .2s ease, box-shadow .2s ease;
+    }
+    .has-extras .scroll-progress{display:block}
+    .has-extras .back-to-top{display:grid}
+    .has-extras .back-to-top.is-visible{
+      opacity:1;
+      transform:translateY(0);
+      pointer-events:auto;
+    }
+    .has-extras .back-to-top:hover{
+      transform:translateY(-2px);
+      box-shadow:0 16px 36px rgba(2,6,23,.65);
+    }
+    .has-extras .menu a.is-active{color:var(--accent)}
+    .has-extras .menu a.is-active::after{width:100%}
+    .has-extras .tech-bg{
+      transform:translate3d(0,var(--bg-shift,0px),0);
+      will-change:transform;
+    }
+    .has-extras .js-ready [data-reveal]{
+      transition-delay:var(--reveal-delay, 0ms);
+    }
+    .has-extras .card:hover{
+      transform:translateY(-6px) scale(1.01);
+    }
+    .cursor-glow{
+      position:fixed;
+      width:220px;
+      height:220px;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(56,189,248,.35), rgba(56,189,248,0) 65%);
+      mix-blend-mode:screen;
+      pointer-events:none;
+      opacity:0;
+      transform:translate3d(-9999px,-9999px,0);
+      transition:opacity .2s ease;
+      z-index:0;
+    }
+    .has-extras .cursor-glow.is-active{opacity:.7}
+    @media (pointer:coarse){
+      .cursor-glow{display:none !important}
+    }
+    .particle-field{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:0;
+      display:none;
+    }
+    .particle{
+      position:absolute;
+      border-radius:50%;
+      background:rgba(148,163,184,.6);
+      box-shadow:0 0 12px rgba(56,189,248,.25);
+      animation:floatParticle var(--particle-dur, 16s) ease-in-out infinite;
+      opacity:var(--particle-opacity, .4);
+    }
+    .has-extras .particle-field{display:block}
+    .has-extras .section-title.shimmer{
+      background:linear-gradient(120deg,var(--accent),#fff,var(--accent-2));
+      background-size:200% 100%;
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      animation:shimmerSweep 1.4s ease both;
+    }
+    .has-extras .project{
+      --tilt-x:0deg;
+      --tilt-y:0deg;
+      transform:perspective(900px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+      transform-style:preserve-3d;
+      transition:transform .15s ease;
+    }
+    .has-extras .project.card:hover{
+      transform:perspective(900px) translateY(-6px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+    }
+    .has-extras .contact-item{
+      justify-content:flex-start;
+      gap:10px;
+    }
+    .has-extras .contact-value{margin-left:auto}
+    .copy-btn{
+      border:1px solid var(--border);
+      background:rgba(2,6,23,.65);
+      color:var(--text);
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:700;
+      letter-spacing:.6px;
+      text-transform:uppercase;
+      cursor:pointer;
+      transition:transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+    }
+    .copy-btn:hover{
+      transform:translateY(-1px);
+      border-color:#334155;
+      box-shadow:0 10px 20px rgba(2,6,23,.4);
+    }
 
     /* hero */
     .hero{
@@ -865,7 +1015,7 @@
     .date{color:var(--muted);font-weight:600}
 
     /* contact */
-    .contact{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .contact{display:grid;grid-template-columns:1fr;gap:18px}
     .contact h3{margin:0 0 6px}
     .contact-note{color:var(--muted);margin:6px 0 14px}
     .contact-info{
@@ -973,6 +1123,14 @@
       0%, 100%{transform:translateY(0)}
       50%{transform:translateY(-6px)}
     }
+    @keyframes shimmerSweep{
+      0%{background-position:0% 50%}
+      100%{background-position:100% 50%}
+    }
+    @keyframes floatParticle{
+      0%, 100%{transform:translateY(0) translateX(0)}
+      50%{transform:translateY(calc(var(--particle-rise, -24px))) translateX(calc(var(--particle-drift, 12px)))}
+    }
     @keyframes thumbFade{
       from{opacity:.5}
       to{opacity:1}
@@ -993,6 +1151,12 @@
       .form-row{grid-template-columns:1fr}
       .stats{grid-template-columns:1fr}
       .section-shell{padding:20px}
+      .back-to-top{
+        right:16px;
+        bottom:16px;
+        width:40px;
+        height:40px;
+      }
     }
   </style>
 </head>
@@ -1016,6 +1180,9 @@
       </nav>
     </div>
   </header>
+  <div class="scroll-progress" aria-hidden="true">
+    <span class="scroll-progress-bar"></span>
+  </div>
 
   <main class="container" data-pdf-root>
     <!-- HERO -->
@@ -1058,7 +1225,7 @@
             </div>
             <div class="about-highlights">
               <div class="highlight-item">ฝึกงานด้าน IT & Support และดูแลการใช้งานระบบในองค์กร</div>
-              <div class="highlight-item">ทำงานร่วมกับทีมและแก้ไขปัญหา UI ให้ใช้งานง่ายขึ้น</div>
+              <!-- <div class="highlight-item">ทำงานร่วมกับทีมและแก้ไขปัญหา UI ให้ใช้งานง่ายขึ้น</div> -->
               <div class="highlight-item">พัฒนาเว็บทั้งโปรเจกต์จริงและโปรเจกต์ส่วนตัวอย่างต่อเนื่อง</div>
             </div>
           </div>
@@ -1204,21 +1371,21 @@
           </div>
 
           <!-- Project 4 -->
-          <div class="card project" data-reveal data-images="Present/IMG_9585.png|Present/IMG_0603.png">
+          <div class="card project" data-reveal data-images="Present/IMG_9585.png|Present/IMG_0603.jpg">
             <div class="thumb logo-thumb" style="background-image:url('Present/Gemini_Generated_Image_lgoor6lgoor6lgoo.png')">
               <span class="project-label">Support</span>
               <span class="project-number">04</span>
             </div>
             <div>
-              <h3 class="project-title"></h3>
-              <p class="project-desc">งาน Support</p>
+              <h3 class="project-title">SUPPORT</h3>
+              <p class="project-desc">งาน Support ทั่วไป</p>
               <div class="meta">
                 <span class="pill">SUPPORT</span>
               </div>
               <ul class="list">
                 <li>เข้าหัวแลน</li>
-                <li>[สิ่งที่ทำ 2]</li>
-                <li>[สิ่งที่ทำ 3]</li>
+                <li>เปลี่ยน power supply ให้เครื่องServer </li>
+                <li>ช่วย Support และแก้ปัญหาให้เพื่อนร่วมงานด้านคอมพิวเตอร์ เช่น แก้ปัญหาเครื่องปริ้น เป็นต้น </li>
               </ul>
               <div class="actions">
                 <button class="link light project-details" type="button">รายละเอียด</button>
@@ -1261,16 +1428,6 @@
               <span class="contact-chip">AI</span>
             </div>
           </div>
-          <form class="card" data-reveal>
-            <h3>ส่งข้อความ</h3>
-            <p class="contact-note">กรอกข้อมูลแล้วผมจะติดต่อกลับโดยเร็วที่สุด</p>
-            <div class="form-row">
-              <input placeholder="ชื่อ" />
-              <input placeholder="อีเมล" />
-            </div>
-            <textarea placeholder="ข้อความ"></textarea>
-            <button class="btn primary" type="button">ส่งข้อความ</button>
-          </form>
         </div>
       </div>
     </section>
@@ -1299,6 +1456,7 @@
       <ul class="modal-list" data-modal-list></ul>
     </div>
   </div>
+  <button class="back-to-top" type="button" data-back-to-top aria-label="Back to top">Top</button>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -1308,6 +1466,13 @@
     const intro = document.querySelector(".intro-video");
     const introVideo = intro?.querySelector("video");
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const ENABLE_EXTRAS = true;
+    if (ENABLE_EXTRAS) {
+      document.body.classList.add("has-extras");
+      if (!prefersReducedMotion) {
+        document.documentElement.classList.add("has-extras-scroll");
+      }
+    }
     const hideIntro = () => {
       if (!intro) return;
       intro.classList.add("hidden");
@@ -1423,6 +1588,258 @@
           setTimeout(type, 200);
         };
         type();
+      }
+    }
+
+    if (ENABLE_EXTRAS) {
+      if (!prefersReducedMotion) {
+        const staggerContainers = document.querySelectorAll(
+          ".grid, .stats, .timeline, .contact-list, .about-highlights"
+        );
+        staggerContainers.forEach((container) => {
+          const items = Array.from(container.querySelectorAll("[data-reveal]"));
+          items.forEach((item, index) => {
+            if (item.dataset.staggered === "true") return;
+            item.dataset.staggered = "true";
+            item.style.setProperty("--reveal-delay", `${index * 80}ms`);
+          });
+        });
+      }
+
+      const canHover = window.matchMedia("(hover: hover)").matches;
+      const finePointer = window.matchMedia("(pointer: fine)").matches;
+      if (!prefersReducedMotion && canHover && finePointer) {
+        const cursorGlow = document.createElement("div");
+        cursorGlow.className = "cursor-glow";
+        const bgLayer = document.querySelector(".tech-bg");
+        if (bgLayer && bgLayer.parentNode) {
+          bgLayer.insertAdjacentElement("afterend", cursorGlow);
+        } else {
+          document.body.insertBefore(cursorGlow, document.body.firstChild);
+        }
+
+        let glowX = 0;
+        let glowY = 0;
+        let targetX = 0;
+        let targetY = 0;
+        let glowRaf = null;
+        let glowActive = false;
+
+        const updateGlow = () => {
+          glowX += (targetX - glowX) * 0.15;
+          glowY += (targetY - glowY) * 0.15;
+          cursorGlow.style.transform = `translate3d(${glowX - 110}px, ${glowY - 110}px, 0)`;
+          const stillMoving = Math.abs(targetX - glowX) > 0.5 || Math.abs(targetY - glowY) > 0.5;
+          if (glowActive || stillMoving) {
+            glowRaf = requestAnimationFrame(updateGlow);
+          } else {
+            glowRaf = null;
+          }
+        };
+
+        window.addEventListener("mousemove", (event) => {
+          targetX = event.clientX;
+          targetY = event.clientY;
+          glowActive = true;
+          cursorGlow.classList.add("is-active");
+          if (!glowRaf) glowRaf = requestAnimationFrame(updateGlow);
+        });
+        window.addEventListener("mouseout", (event) => {
+          if (event.relatedTarget) return;
+          glowActive = false;
+          cursorGlow.classList.remove("is-active");
+        });
+      }
+
+      if (!prefersReducedMotion) {
+        const particleField = document.createElement("div");
+        particleField.className = "particle-field";
+        const count = 20;
+        for (let i = 0; i < count; i += 1) {
+          const dot = document.createElement("span");
+          dot.className = "particle";
+          const size = 2 + Math.random() * 3.5;
+          dot.style.width = `${size}px`;
+          dot.style.height = `${size}px`;
+          dot.style.left = `${Math.random() * 100}%`;
+          dot.style.top = `${Math.random() * 100}%`;
+          dot.style.setProperty("--particle-dur", `${12 + Math.random() * 10}s`);
+          dot.style.setProperty("--particle-rise", `${-18 - Math.random() * 18}px`);
+          dot.style.setProperty("--particle-drift", `${-10 + Math.random() * 20}px`);
+          dot.style.setProperty("--particle-opacity", `${0.2 + Math.random() * 0.4}`);
+          dot.style.animationDelay = `${-Math.random() * 10}s`;
+          particleField.appendChild(dot);
+        }
+        const bgLayer = document.querySelector(".tech-bg");
+        if (bgLayer && bgLayer.parentNode) {
+          bgLayer.insertAdjacentElement("afterend", particleField);
+        } else {
+          document.body.insertBefore(particleField, document.body.firstChild);
+        }
+      }
+
+      if (!prefersReducedMotion && "IntersectionObserver" in window) {
+        const titles = document.querySelectorAll(".section-title");
+        const shimmerObserver = new IntersectionObserver(
+          (entries, observer) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return;
+              entry.target.classList.add("shimmer");
+              observer.unobserve(entry.target);
+            });
+          },
+          { threshold: 0.7 }
+        );
+        titles.forEach((title) => {
+          title.addEventListener(
+            "animationend",
+            () => title.classList.remove("shimmer"),
+            { once: true }
+          );
+          shimmerObserver.observe(title);
+        });
+      }
+
+      if (!prefersReducedMotion && canHover && finePointer) {
+        const tiltCards = document.querySelectorAll(".project");
+        tiltCards.forEach((card) => {
+          let rect = null;
+          const handleMove = (event) => {
+            if (!rect) rect = card.getBoundingClientRect();
+            const x = (event.clientX - rect.left) / rect.width - 0.5;
+            const y = (event.clientY - rect.top) / rect.height - 0.5;
+            card.style.setProperty("--tilt-x", `${(-y * 6).toFixed(2)}deg`);
+            card.style.setProperty("--tilt-y", `${(x * 8).toFixed(2)}deg`);
+          };
+          card.addEventListener("mouseenter", () => {
+            rect = card.getBoundingClientRect();
+          });
+          card.addEventListener("mousemove", handleMove);
+          card.addEventListener("mouseleave", () => {
+            rect = null;
+            card.style.setProperty("--tilt-x", "0deg");
+            card.style.setProperty("--tilt-y", "0deg");
+          });
+        });
+      }
+
+      const contactItems = document.querySelectorAll(".contact-item");
+      const copyText = async (text) => {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text);
+          return;
+        }
+        const textarea = document.createElement("textarea");
+        textarea.value = text;
+        textarea.setAttribute("readonly", "");
+        textarea.style.position = "absolute";
+        textarea.style.left = "-9999px";
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        textarea.remove();
+      };
+      contactItems.forEach((item) => {
+        const valueEl = item.querySelector("span:not(.contact-label)");
+        if (!valueEl) return;
+        const labelText = item.querySelector(".contact-label")?.textContent?.trim() || "ข้อมูล";
+        valueEl.classList.add("contact-value");
+        const copyBtn = document.createElement("button");
+        copyBtn.type = "button";
+        copyBtn.className = "copy-btn";
+        copyBtn.textContent = "คัดลอก";
+        copyBtn.setAttribute("aria-label", `คัดลอก ${labelText}`);
+        copyBtn.addEventListener("click", async () => {
+          const text = valueEl.textContent.trim();
+          if (!text) return;
+          try {
+            await copyText(text);
+            const original = copyBtn.textContent;
+            copyBtn.textContent = "คัดลอกแล้ว";
+            setTimeout(() => {
+              copyBtn.textContent = original;
+            }, 1500);
+          } catch {
+            /* no-op */
+          }
+        });
+        item.appendChild(copyBtn);
+      });
+
+      const progressBar = document.querySelector(".scroll-progress-bar");
+      const backToTop = document.querySelector("[data-back-to-top]");
+      const techBg = document.querySelector(".tech-bg");
+      const sections = Array.from(document.querySelectorAll("main section[id]"));
+      const navLinks = Array.from(document.querySelectorAll(".menu a[href^=\"#\"]"));
+
+      if (backToTop) {
+        backToTop.addEventListener("click", () => {
+          window.scrollTo({ top: 0, behavior: prefersReducedMotion ? "auto" : "smooth" });
+        });
+      }
+
+      let scrollTicking = false;
+      const updateScrollUI = () => {
+        const doc = document.documentElement;
+        const total = doc.scrollHeight - doc.clientHeight;
+        const progress = total > 0 ? doc.scrollTop / total : 0;
+        if (progressBar) {
+          progressBar.style.transform = `scaleX(${Math.min(Math.max(progress, 0), 1)})`;
+        }
+        if (backToTop) {
+          backToTop.classList.toggle("is-visible", doc.scrollTop > 420);
+        }
+        if (techBg && !prefersReducedMotion) {
+          const shift = Math.min(60, doc.scrollTop * 0.08);
+          document.documentElement.style.setProperty("--bg-shift", `${shift}px`);
+        }
+      };
+
+      const requestScrollUpdate = () => {
+        if (scrollTicking) return;
+        scrollTicking = true;
+        requestAnimationFrame(() => {
+          updateScrollUI();
+          scrollTicking = false;
+        });
+      };
+
+      window.addEventListener("scroll", requestScrollUpdate, { passive: true });
+      window.addEventListener("resize", requestScrollUpdate);
+      requestScrollUpdate();
+
+      if (sections.length && navLinks.length) {
+        const linkById = {};
+        navLinks.forEach((link) => {
+          const id = link.getAttribute("href")?.slice(1);
+          if (id) linkById[id] = link;
+        });
+        const setActive = (id) => {
+          navLinks.forEach((link) => link.classList.remove("is-active"));
+          if (linkById[id]) linkById[id].classList.add("is-active");
+        };
+        if ("IntersectionObserver" in window) {
+          const spyObserver = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) setActive(entry.target.id);
+              });
+            },
+            { rootMargin: "-40% 0px -55% 0px", threshold: 0.01 }
+          );
+          sections.forEach((section) => spyObserver.observe(section));
+        } else {
+          const spyFallback = () => {
+            let currentId = sections[0].id;
+            const offset = window.scrollY + window.innerHeight * 0.4;
+            sections.forEach((section) => {
+              if (section.offsetTop <= offset) currentId = section.id;
+            });
+            setActive(currentId);
+          };
+          window.addEventListener("scroll", spyFallback, { passive: true });
+          spyFallback();
+        }
       }
     }
 
